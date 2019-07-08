@@ -66,7 +66,9 @@ public class PostImagesActivity extends AppCompatActivity {
         rcvImg.setAdapter(postArticleImgAdapter);
 
 
-        MyRecyItemTouchCallBack myRecyItemTouchCallBack = new MyRecyItemTouchCallBack(postArticleImgAdapter, pathList);
+        MyRecyItemTouchCallBack myRecyItemTouchCallBack = new MyRecyItemTouchCallBack(postArticleImgAdapter,
+                pathList,
+                (int)(getResources().getDimension(R.dimen.article_post_delete)));
         itemTouchHelper = new ItemTouchHelper(myRecyItemTouchCallBack);
         itemTouchHelper.attachToRecyclerView(rcvImg);//绑定RecyclerView
 

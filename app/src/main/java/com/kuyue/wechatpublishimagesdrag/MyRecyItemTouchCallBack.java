@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,10 +25,12 @@ public class MyRecyItemTouchCallBack extends ItemTouchHelper.Callback {
     private PostArticleImgAdapter adapter;
     private List<String> images;//图片经过压缩处理
     private boolean up;//手指抬起标记位
+    private int mDeleteViewHeight;
 
-    public MyRecyItemTouchCallBack(PostArticleImgAdapter adapter, List<String> images) {
+    public MyRecyItemTouchCallBack(PostArticleImgAdapter adapter, List<String> images,int deleteViewHeight) {
         this.adapter = adapter;
         this.images = images;
+        this.mDeleteViewHeight = deleteViewHeight;
     }
 
     /**
@@ -140,9 +143,10 @@ public class MyRecyItemTouchCallBack extends ItemTouchHelper.Callback {
             return;
         }
 
-        if (dY >= (recyclerView.getHeight()
+        if (dY >= (
+                ((ViewGroup) recyclerView.getParent()).getHeight() - recyclerView.getTop()
                 - viewHolder.itemView.getBottom()//item底部距离recyclerView顶部高度
-                - CommonUtils.getPixelById(R.dimen.article_post_delete))) {//拖到删除处
+                - mDeleteViewHeight)) {//拖到删除处
             dragListener.deleteState(true);
             if (up) {//在删除处放手，则删除item
                 viewHolder.itemView.setVisibility(View.INVISIBLE);//先设置不可见，如果不设置的话，会看到viewHolder返回到原位置时才消失，因为remove会在viewHolder动画执行完成后才将viewHolder删除
